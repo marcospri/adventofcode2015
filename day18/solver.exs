@@ -1,4 +1,6 @@
 defmodule Day18 do
+  @lights_size 99
+
   def load_board file_name do
     file_name
     |> File.stream!
@@ -9,6 +11,11 @@ defmodule Day18 do
   end
 
   def light_at(_, {x, y}) when (x < 0 or y < 0), do:  {".", x}
+  def light_at(_, {0, 0}), do: {"#", 0}
+  def light_at(_, {0, @lights_size}), do: {"#", 0}
+  def light_at(_, {@lights_size, @lights_size}), do: {"#", @lights_size}
+  def light_at(_, {@lights_size, 0}), do: {"#", @lights_size}
+
   def light_at(lights, {x,y}) do
     case Enum.at(lights, y) do
       nil -> {".", x}
@@ -23,6 +30,11 @@ defmodule Day18 do
     ]
   end
 
+  def next_light_at(_, {0,0}, _), do: {"#", 0}
+  def next_light_at(_, {0,@lights_size}, _), do: {"#", 0}
+  def next_light_at(_, {@lights_size,@lights_size}, _), do: {"#", @lights_size}
+  def next_light_at(_, {@lights_size,0}, _), do: {"#", @lights_size}
+  
   def next_light_at old_lights, {x,y}, light do
     lights_on = 
       neighbors(x,y)
